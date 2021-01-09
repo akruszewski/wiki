@@ -50,4 +50,17 @@
             (lambda (page) (printf "~a\n" page))
             (wiki/list-pages-paths wiki-root-directory)))])
 
-(apply wiki/run (vector->list (current-command-line-arguments)))
+(define (help)
+    (void (printf "wiki is simple wiki utilit\n")
+     (printf "\n")
+     (printf "Arguments:\n")
+     (printf "\tget PAGE_NAME       - get wiki page\n")
+     (printf "\tget-path PAGE_NAME  - get wiki page path\n")
+     (printf "\tlist                - list all pages\n")
+     (printf "\tlist-paths          - list all pages paths\n")
+     (printf "\thelp                - show this page\n")))
+
+(let ((cmd (vector->list (current-command-line-arguments))))
+    (if (equal? (length cmd) 0)
+        (help)
+        (apply wiki/run cmd)))
