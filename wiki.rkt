@@ -36,6 +36,7 @@
       (directory-list wiki-directory)))
 
 (define/match (wiki/run cmd . page-name)
+    [("help" '()) (help)]
     [("get" page-name)
      (printf "~a\n" (wiki/get-page-content
                       (wiki/get-or-create-path (car page-name))))]
