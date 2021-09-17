@@ -1,0 +1,6 @@
+- add edit comment which will run $EDITOR,
+- add integration with github
+- add daily which will create file in $WIKI_PATH daily directory with
+  current date as a name if not exists, and open it with $EDITOR
+- add integration scripts for kakoune and fzf
+- add render script which
