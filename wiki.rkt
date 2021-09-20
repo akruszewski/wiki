@@ -1,10 +1,12 @@
-#! /usr/local/bin/racket
+#!/bin/env racket
 
 #lang racket/base
 
 (require racket/cmdline)
 (require racket/file)
 (require racket/match)
+(require racket/system)
+(require racket/string)
 
 (define wiki-root-directory (getenv "WIKI_PATH"))
 
@@ -36,8 +38,13 @@
       (lambda (x) (path->string (path->complete-path x wiki-root-directory)))
       (directory-list wiki-directory)))
 
+(define (wiki/edit-page page-name)
+    (let ((page-path (wiki/get-or-create-path page-name)))
+        (system (string-join (list (getenv "EDITOR") (path->string page-path))))))
+
 (define/match (wiki/run cmd . page-name)
     [("help" '()) (help)]
+    [("edit" page-name) (wiki/edit-page (car page-name))]
     [("get" page-name)
      (printf "~a\n" (wiki/get-page-content
                       (wiki/get-or-create-path (car page-name))))]
@@ -58,6 +65,7 @@
   (printf "Arguments:\n")
   (printf "\tget PAGE_NAME       - get wiki page\n")
   (printf "\tget-path PAGE_NAME  - get wiki page path\n")
+  (printf "\tedit PAGE_NAME      - edit wiki page\n")
   (printf "\tlist                - list all pages\n")
   (printf "\tlist-paths          - list all pages paths\n")
   (printf "\thelp                - show this page\n")))
