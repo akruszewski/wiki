@@ -57,7 +57,9 @@
     [("list-paths" '())
      (void (map
             (lambda (page) (printf "~a\n" page))
-            (wiki/list-pages-paths wiki-root-directory)))])
+            (wiki/list-pages-paths wiki-root-directory)))]
+    [(list a)
+     (void (printf "unknown command\n\n") (help))])
 
 (define (help)
  (void (printf "wiki is simple wiki utilit\n")
@@ -73,4 +75,6 @@
 (let ((cmd (vector->list (current-command-line-arguments))))
     (if (equal? (length cmd) 0)
         (help)
-        (apply wiki/run cmd)))
+        (if (string-environment-variable-name? "WIKI_PATH")
+            (apply wiki/run cmd)
+            (printf "WIKI_PATH is not set\n"))))
